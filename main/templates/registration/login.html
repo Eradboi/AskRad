@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}AskRad | Login{% endblock %}</title>
+    <style>
+        .login-form{
+            display: grid;
+            place-items: center;  
+            margin-left: auto;
+            margin-right: auto;  
+            padding: 10px;
+            border: 1px solid rgb(255, 255, 255);
+            box-shadow: 0px 0px 4px black;
+            width: 350px;
+        }
+        
+        .form-group{
+            padding: 5px;
+            width: 300px;
+        }
+        a{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="login-form">
+        
+        <form method="post">
+                <h1>Login</h1>
+                {% csrf_token %}
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                <div hx-post="/check_username2/" hx-target="#username-error" hx-trigger="keyup">
+                    {{ form.username}}
+                </div>
+                <p style="color: rgb(18, 122, 36); font-size: 12px;" id="username-error"></p>
+
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                <div>
+                    {{form.password}}
+                </div>
+    
+                <br>
+                <button type="submit" class="btn btn-dark" id="bts" >Login</button>
+                <br>
+                <p>Don't have an account? Create one <a href="{% url 'register' %}">here</a></p>
+                <p><a href="{% url 'password_reset' %}">Forgot Password</a></p>
+            </form>
+        </div>
+</body>
+{% endblock %}
+</html>

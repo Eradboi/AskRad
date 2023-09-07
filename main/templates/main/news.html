@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Askrad | News {% endblock %}</title>
+    <style>
+        .container{
+            padding: 10px;
+            border-radius: 10px;
+            margin: auto;
+            margin-bottom: 10px;
+            width: 90%;
+            max-width: max-content;
+            background: linear-gradient(to top, transparent, rgb(203, 227, 250));
+        }
+        .list{
+            padding: 5px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0px 1px 3px black;
+        }
+        .list:hover{
+            box-shadow: 3px 3px 1px black;
+        }
+        .post-bottom{
+            color: rgb(0, 0, 0);
+            padding: 5px;
+            background-color: white;
+            border-radius: 5px;
+            width: inherit;
+            font-size: 10px;
+            overflow: hidden;
+        }
+        .list p{
+            font-weight: lighter;
+        }
+        .post-title{
+            font-size: 45px;
+        }
+        
+        .form2group{
+            margin: auto;
+            padding: 10px;
+            width: max-content;
+            margin-bottom: 30px;
+        }
+        .form-group{
+            margin: auto;
+            padding: 10px;
+            width: max-content;
+        }
+        .primarybtn{
+            height: inherit;
+            background-color: rgb(59, 142, 250);
+            border: none;
+            border-radius: 1px;
+        }
+        .error{
+            color: rgb(182, 11, 11);
+            font-size: larger;
+            text-align: center;
+            font-family: 'kanit', sans-serif;
+            
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        small{
+            font-size: 9px;
+            color: rgb(163, 163, 163);
+        }
+        .crypto-head{
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 80px;
+            margin: auto;
+            overflow: hidden;
+            color: white;
+        }
+        .pic-box{
+            margin: auto;
+          
+        }
+        .post-image{
+            width: 30rem;
+            border: 1px solid rgb(187, 211, 255);
+            border-radius: 5px;
+        }
+        .post-subtitle{
+            padding: 5px;
+        }
+        .news-pic{
+            width: 100%;
+            height: 150px;
+            background: url("https://static.vecteezy.com/system/resources/thumbnails/013/654/649/original/3d-virtual-tv-studio-news-backdrop-for-tv-shows-tv-on-wall-3d-virtual-news-studio-background-loop-free-video.jpg");
+            background-position: center;
+            background-size: cover;
+
+        }
+    
+        @media only screen and (max-width: 768px) {
+            .post-image{
+                width: 280px;
+                margin-block-end: 10px;
+            }
+            .news-pic{
+            width: 100%;
+            height: 100px;
+            }
+            .crypto-head{
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 40px;
+            margin: auto;
+            overflow: hidden;
+            color: white;
+            }
+            .post-title{
+            font-size: 20px;}
+            .form-group{
+            margin: auto;
+            padding: 4px;
+            width: max-content;
+            max-width: 90%;
+            overflow: hidden;
+            }
+        .pic-box{
+            display: contents;
+            overflow: hidden;
+        }
+        .myDiv{
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .image-box{
+            overflow: hidden;
+        }
+        } 
+        @media only screen and (max-width: 360px) {
+            .post-image{
+                width: 250;
+                margin-block-end: 10px;
+                overflow: hidden;
+            }
+            @media only screen and (max-width: 320px) {
+                .post-image{
+                width: 18rem;
+                margin-block-end: 10px;
+                overflow: hidden;
+            } 
+            }
+            @media only screen and (width: 820px) {
+                .post-image{
+                    width: 100;
+                    margin-block-end: 10px;
+                }
+                .post-title{
+                    font-size: 30px;
+                }
+                }
+        }
+    </style>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+</head>
+<body>
+    <div class="news-pic">
+        <h1 class="crypto-head">Rad News Rad News Rad News Rad News Rad News Rad News</h1>
+    </div>
+    <form  method="POST" class="form-group">
+        {% csrf_token %}
+        <input name="country" id="country" type="text" value="{{ country }}" placeholder="Country.. eg ng">
+        <input name="language" id="language" type="text" value="{{ language }}" placeholder="Language e.g en">
+        <button class="primarybtn" type="submit"><i class="fas fa-search"></i></button>
+        <br>
+        <small>Uses 2-letter ISO 3166-1</small>
+    </form>
+    <hr>
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+    {% if titles %}
+    <div class="container">
+    {% for title, description, url, author, date, image in all_news %}
+            {% if title != "[Removed]" %}
+            <div class="list">
+                
+                <div class="pic-box">
+                    <div class="image-box">
+                        {% if image %}
+                        <img id="the-image" class="post-image" src="{{ image }}" alt="post-image">
+                        {% endif %}
+                    </div>
+                   
+                    <div id="myDiv">
+                        <a href="{{ url }}">
+                    <h4 class="post-title">{{ title }}</h2>
+                    </a>
+                        <p class="post-subtitle">{{ description }}</p>
+                    </div>
+                </div>
+                {% if author %}
+                <p class="post-bottom">By <a href="https://www.google.com/search?q={{ author }}">{{ author }}</a> on {{ date }}</p>
+                {% else %}
+                <p class="post-bottom">On {{ date }}</p>
+                {% endif %}
+            </div>
+
+            {% endif %}
+            {% endfor %}
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+      $( function() {
+        $( "#country" ).autocomplete({
+          source: ["ae","ar","at","au","be","bg","br","ca","ch","cn","co","cu","cz","de","en","fr","gb","gr","hk","hu","id","ie","il","in","it","jp","kr","lt","lv","ma","mx","my","ng","nl","no","nz","pa","pl","pt","ro","ru","rs","sa","se","sg","si","sk","th","tr","tw","ua","us","ve","za"]
+
+        });
+      } );
+
+      $( function() {
+        $( "#language" ).autocomplete({
+          source: [ 'en','ru','fr','cn','gb','de',]    
+            });
+      } );
+    </script>
+</body>
+{% endblock %}
+</html>

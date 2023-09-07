@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}AskRad | SignUp{% endblock %}</title>
+    <style>
+        .reg-form{
+            display: grid;
+            margin: auto;
+            padding: 10px;
+            border: 1px solid rgb(255, 255, 255);
+            box-shadow: 0px 0px 4px black;
+            width: 300px;
+            overflow: hidden;
+        }
+        .form-group{
+            width: 300px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        li{
+            color: rgb(255, 0, 0);
+            font-size: 12px;
+        }
+        .smaller{
+            font-size: 11px;
+        }
+        .fa-check{
+            color: rgb(2, 177, 2);
+        }
+    </style>
+</head>
+<body>
+    <div class="reg-form" id="register">  
+        <form  class="form-group" method="POST">
+            <h1>Sign Up</h1>
+             {% csrf_token %}
+             <div>
+                 <label for="{{ form.username.id_for_label }}">Username</label>
+                 <br>
+                 <div hx-post="/check_username/" hx-swap="innerhtml" hx-target="#username-error" hx-trigger="keyup">
+                     {{ form.username }}
+                    </div>
+                    {% if form.username.errors %}
+                       <ul class="errorlist">
+                       {% for error in form.username.errors %}
+                           <li>{{ error }}</li>
+                       {% endfor %}
+                       </ul>
+                   {% else %}
+                   
+                   <p style="color: rgb(18, 122, 36); font-size: 12px;" id="username-error"></p>
+                   {% endif %}
+             </div>
+         
+             
+             <div>
+                 <label for="{{ form.email.id_for_label }}">Email</label>
+                 <div hx-post="/email_username/" hx-swap="innerhtml" hx-target="#email-error" hx-trigger="keyup">
+
+                     {{ form.email }}
+                 </div>
+                 {% if form.email.errors %}
+                    <ul class="errorlist">
+                    {% for error in form.email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p style="color: rgb(18, 122, 36); font-size: 12px;" id="email-error"></p>
+
+                {% endif %}
+
+             </div>
+             <br>
+             <div>
+                 <label for="{{ form.password1.id_for_label }}">Password</label>
+                 <br>
+                 <div  hx-post="/check_password/" hx-swap="innerhtml" hx-target="#password-error" hx-trigger="keyup">
+                     {{ form.password1 }}
+                 </div>
+                 {% if form.password1.errors %}
+                    <ul class="errorlist">
+                    {% for error in form.password1.errors %}
+                        <li >{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p style="color: rgb(18, 122, 36); font-size: 12px;" id="password-error"></p>
+
+                {% endif %}
+             </div>
+             <br>
+             <div>
+                 <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                 <br>
+                 <div hx-post="/check_password2/" hx-swap="innerhtml" hx-target="#password-error2" hx-trigger="keyup">
+
+                     {{ form.password2 }}
+                 </div>
+                 
+                 {% if form.password2.errors %}
+                    <ul class="errorlist">
+                    {% for error in form.password2.errors %}
+                        <li >{{ error }}</li>
+
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p style="color: rgb(18, 122, 36); font-size: 12px;" id="password-error2"></p>
+
+                {% endif %}
+             </div>
+             <br>
+             <div>
+                <label for="{{ form.captcha.id_for_label }}">Captcha</label>
+                <div>
+
+                    {{ form.captcha}}
+                </div>
+                {% if form.captcha.errors %}
+                    <ul class="errorlist">
+                    {% for error in form.captcha.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+             </div>
+             <br><br>   
+             <small class="smaller">Username must be 150 characters or fewer. Letters, digits and @/./+/-/_ only. <br>
+                Your password can’t be too similar to your other personal information. <br>
+                Your password must contain at least 8 characters. <br>
+                Your password can’t be a commonly used password. <br>
+                Your password can’t be entirely numeric.</small>
+                <br><br>
+             <button class="btn btn-dark" type="submit" name="Create User">Create Account</button>
+             <br>
+             <span class="spann">Already have an account?  <a href="{% url 'login' %}">Login</a></span>
+        </form>
+    </div>
+</body>
+{% endblock %}
+</html>

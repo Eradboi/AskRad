@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AskRad | Weather {% endblock %}</title>
+    <style>
+        /* animations */
+        @keyframes bounce {
+                from {
+                    transform: translateY(20px);
+                }
+                to{
+                    transform: translateY(0px);
+                }
+            }
+        @keyframes slidein {
+                from {
+                    transform: translateX(500px);
+                }
+                to {
+                    transform:translateX(0px);
+                }
+            }
+            .padding {
+                padding: 15px;
+                overflow: hidden;
+            }
+
+            .container-play {
+                box-sizing: border-box;
+                background: rgb(0, 0, 0);
+                color: white;
+                cursor: pointer;
+                padding: 5px 0 0 0;
+                margin: 0 auto;
+                display: inline-block;
+                position: relative;
+                border-radius: 10px; 
+                height: 35px;
+                width: 140px;
+                text-align: center;
+            }
+
+            audio {
+                display: none;
+            }
+
+            .play-button::before,
+            .play-button.playing::before{
+                content: '';
+                display: inline-block;
+                border: 0;
+            background: transparent;
+            box-sizing: border-box;
+            width: 0;
+            height: 12px;
+                margin-right: 4px;
+
+            border-color: transparent transparent transparent #FFF;
+            transition: 100ms all ease;
+            cursor: pointer;
+
+            border-style: solid;
+            border-width: 6px 0 6px 8px;
+            }
+
+            .play-button.playing::before {
+                border-style: double;
+            border-width: 0px 0 0px 8px;
+            }   
+        .row{
+          display: grid;
+          grid-template-columns: 2fr 3.5fr; /* Equal width for each column */
+          grid-gap: 10px;
+          border-radius: 20px;
+          height: fit-content;
+          align-items: center;
+          width: 100%;
+          background: url('https://images.pexels.com/photos/1431822/pexels-photo-1431822.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+          background-position: top;
+          background-size: cover;
+        }
+        .error{
+            color: rgb(182, 11, 11);
+            font-size: larger;
+            text-align: center;
+            font-family: 'kanit', sans-serif;
+            
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        form{
+            padding: 10px;
+            margin: 5px;
+        }
+        .box{
+            width: 200px;
+            border: 1px solid rgb(18, 2, 56);
+            background-color: azure;
+            border-radius: 3px;
+        }
+        .button{
+            color: white;
+            background-color: rgb(0, 0, 0);
+            border-radius: 4px;
+            width: 100px;
+        }
+        .form-holder{
+           
+            height: 300px;
+            border-radius: 20px;
+        }
+        .one{
+            text-align: center;
+            font-size: 60px;
+            padding: 10px;
+            font-family: 'Tektur', 'sans-serif';
+            color: white;
+            text-shadow: 0px 0px 5px black;
+        }
+        .form-holder a{
+            text-decoration: none;
+            color: rgb(255, 255, 255);
+        }
+        i{
+            color: white;
+            animation:bounce .98s ease-in-out 1.2s infinite normal none;
+        }
+        .contents{
+            height: 320px;
+            padding: 10px;
+            border-radius: 15px;
+        }
+        .main{
+            display: flex;
+            height: inherit;
+        }
+        .main2{
+            display: flex;
+        }
+        .first{
+            color: white;
+            font-size: 80px;
+            font-family: 'Cabin', 'sans serif';
+        }
+        .firsto{
+            padding: 5px;
+            color: black;
+            font-size: 30px;
+            font-family: 'Cabin', 'sans serif'; 
+        }
+        .firsts{
+            text-align: center;
+            color: black;
+            font-size: 20px;
+            font-family: 'Cabin', 'sans serif';
+        }
+        .firstss{
+            text-align: center;
+            color: black;
+            font-size: 20px;
+            font-family: 'Cabin', 'sans serif';
+        }
+        .weather-adds{
+            margin-right: 50px;
+        }
+        .onetime{
+            font-family: 'Cabin', 'sans serif';
+            font-size: 15px;
+            font-weight: 600px; 
+        }
+        .main-ba{
+            margin-bottom: 20px;
+        }
+        .main-a{
+            animation-name:slidein;
+            animation-duration:1s;
+            animation-timing-function:ease-in;
+            animation-iteration-count: 1;
+            animation-direction: normal;
+            animation-fill-mode: none; 
+        }
+        .firstsss{
+            font-weight: 500;
+        }
+        .firstssst{
+            font-weight: 500;
+        }
+        .place{
+            font-size: 25px;
+        }
+        .weather-wrap{
+            margin: auto;
+        }
+        @media only screen and (max-width: 768px) {
+            .row{
+            display: grid;
+            grid-template-columns: 1fr; /* Equal width for each column */
+            grid-gap: 5px;
+            border-radius: 20px;
+            height: fit-content;
+            width: fit-content;
+            background: url('https://images.pexels.com/photos/1431822/pexels-photo-1431822.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-position: top;
+            background-size: cover;
+            }
+            
+
+        }
+        
+    </style>
+</head>
+<body>
+    {% if error %}
+    <div>
+
+        <p class="error">{{error}}</p>
+    </div>
+    {% endif %}
+    <div class="container weather-wrap">
+        <div class="row justify-content-md-center">
+            <div class="col form-holder">
+                <form method="POST" class="form-group">
+                    {% csrf_token %}
+                    <input class="box" type="text" name="city" id="city" placeholder="What's the weather in ...">
+                    <br>
+                    <input class="button" type="submit" value="CHECK">
+                        <br>
+                        <br>
+                </form>
+                <br>
+                {% if data %}
+                <span class="one"><a class="place" href="https://www.google.com/search?q={{ data.city }}+{{ data.country }}&oq"><i class="fa-solid fa-map-location-dot"></i> {{ data.city }}, {{ data.country }}</a></span>
+                <img class="flag" src="https://flagcdn.com/w80/{{ data.flag }}.png" alt="flag">
+
+                <div class="padding">
+                    <div class="container-play" onclick="toggleAudio()">
+                        <audio preload="metadata" controls controlslist="nodownload">
+                            <source src="{% static 'audio/speech.mp3' %}" type="audio/mpeg">
+                            Your browser does not support the audio tag.
+                        </audio>
+                        <div class="play-button">Listen <span class="duration">0:00</span></div>
+                    </div>
+                </div>
+                <script>
+                    const audio = document.querySelector('audio');
+                    const container = document.querySelector('.container-play');
+                    const audioDuration = document.querySelector('.duration');
+                    const playButton = document.querySelector('.play-button');
+                    let isPlaying = false;
+
+                    const toggleAudio = (event) => {
+                        if (isPlaying) {
+                            audio.pause()
+                            isPlaying = false
+                            playButton.classList.remove('playing')
+                        } else {
+                            audio.play()
+                            isPlaying = true
+                            playButton.classList.add('playing')
+                        }
+                    }
+
+                    audio.onloadedmetadata = () => {
+                        let minutes = Math.floor(audio.duration / 60)
+                        let seconds = Math.floor(audio.duration - minutes * 60)
+                        audioDuration.innerHTML = `${minutes}:${seconds}`
+                    }
+                </script>
+            </div>
+            <div class="col contents">
+                <div class="main">
+                    <div class="main-a">
+                        {% if data.description == "clear sky" %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-01-256.png" alt="weather picture" width="100px" height="100px">
+
+                        {% endif %}
+                        {% if data.description == "few clouds" %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-02-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.description == "scattered clouds" %}
+                        <img src="https://cdn3.iconfinder.com/data/icons/tiny-weather-1/512/cloudy-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.description == "broken clouds" %}
+                        <img src="https://cdn3.iconfinder.com/data/icons/tiny-weather-1/512/cloudy-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.description == "overcast clouds" %}
+                        <img src="https://cdn3.iconfinder.com/data/icons/tiny-weather-1/512/cloud-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.main == "Drizzle" %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-30-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.main == "Rain" %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-32-512.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.description == "shower rain" or data.description == "light intensity shower rain" or data.description == "heavy intensity shower rain" or data.description == "ragged shower rain" %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-03-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.description == "freezing rain" %}
+                        <img src="https://cdn3.iconfinder.com/data/icons/tiny-weather-1/512/snow-cloud-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.main == "Thunderstorm" %}
+                        <img src="https://cdn3.iconfinder.com/data/icons/tiny-weather-1/512/flash-cloud-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+                        {% if data.main == "Snow" %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-24-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+
+                        {% if data.description == "mist" or data.description == "smoke" or data.description == "haze" or data.description == "sand" or data.description == "fog" or data.description == "ash" or data.description == "squalls" or data.description == "tornado" %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-27-256.png" alt="weather picture" width="100px" height="100px">
+                        {% endif %}
+
+                    </div>
+                    
+                    <div class="main-b">
+                        <span class="first">{{ data.temp }}°C</span>
+                        <span class="firsto">{{ data.tempa }}°F</span>
+                        <div class="main-ba">
+                            <span class="firsts">{{ data.main }}</span>
+                            <br>
+                            <span class="firstss">{{ data.description }}</span>
+                        </div>
+                        <div class="main2">
+                            <div class="weather-adds">
+                            <span class="firstsss">{{ data.wind }} m/s</span>
+                            <img src="https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-26-256.png" alt="wind-logo" width="35px" height="35px"> 
+                            </div>
+                            <div class="others">
+                            <span class="firstssst">{{ data.humidity }}%</span>
+                            <img src="https://cdn3.iconfinder.com/data/icons/tiny-weather-1/512/rain-256.png" alt="humidity-logo" width="35px" height="35px">
+                            </div>
+                        </div>
+                    </div>
+                
+                </div> 
+            </div>
+        </div>                           
+    </div>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

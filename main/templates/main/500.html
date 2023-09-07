@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}AskRad | 500 Error{% endblock %}</title>
+    <style>
+        h6{
+            color: rgb(0, 60, 255);
+        }
+        h1{
+            color: black;
+            font-size: 150px;
+            font-family: 'kanit', sans-serif;
+            margin-top: 50px;
+        }
+        div{
+            text-align: center;
+            padding: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        <h1>500 Internal Server Error</h1>
+        <br>
+        <h6>Don't Ask Rad where you are</h6>
+        <h6><a href="{% url 'homepage' %}">Click to Back Home</a></h6>
+    </div>
+</body>
+{% endblock %}
+</html>

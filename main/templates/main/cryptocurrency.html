@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Askrad | Crypto {% endblock %}</title>
+</head>
+<body>
+    <div hx-get="{% url 'crypto' %}" hx-trigger="load, every 30s" hx-tries="3" hx-timeout="60s">
+        <img class="htmx-indicator" id="indicator" src="https://i.pinimg.com/originals/07/24/88/0724884440e8ddd0896ff557b75a222a.gif" alt="" width="250" height="215" style="background: white; justify-content: center; justify-self: center;">
+    </div> 
+    
+</body>
+{% endblock %}
+</html>

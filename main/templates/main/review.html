@@ -1,0 +1,128 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AskRad | Review{% endblock %}</title>
+    <style>
+        .form-group{
+            width: 350px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .review{
+            display: grid;
+            place-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            border: 1px solid rgb(255, 255, 255);
+            box-shadow: 0px 0px 4px black;
+            width: fit-content;
+        }
+        .contents{
+            display: grid;
+            place-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            border: 1px solid rgb(255, 255, 255);
+            box-shadow: 0px 0px 4px black; 
+            width: 300px;
+            height: auto;
+        }
+        .comment{
+            font-size: 15px;
+            font-family: 'Changa', sans-serif;
+            width: 250px;
+            margin-bottom: 20px;
+        }
+        .stars{
+            font-size: 15px;
+            color: rgb(0, 140, 255)
+        }
+        
+        span{
+            font-size: 10px;
+        }
+        
+        h3{
+            text-align: center;
+            font-size: 15px;
+        }
+        .below{
+            text-align: center;
+        }
+        .comment-box{
+            display: grid;
+            place-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            border: 1px solid rgb(255, 255, 255);
+            box-shadow: 0px 0px 1px rgb(6, 105, 218); 
+            width: 280px;
+            height: auto; 
+        }
+    </style>
+</head>
+<body>
+    <div class="review">
+        <h1>Reviews</h1>
+        <form method="post" class="form-group">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-dark">Post</button>
+        </form>
+    </div>
+    <br>
+    <h3 class="views1">{{ reviews.count }} reviews and counting</h3>
+        {% if reviews %}
+            {% for review in reviews %}
+                <br>
+                <div class="contents">
+                    <div class="comment-box">
+                        <h6 class="comment">{{ review.comment }}</h6>
+
+                    </div>
+                    <br>
+                    <div class="below">
+                    {% if review.rating == 1 %}
+                        <h6 class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></h6>
+                    {% endif %}
+                    {% if review.rating == 2 %}
+                        <h6 class="stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i></h6>
+                    {% endif %}
+                    {% if review.rating == 3 %}
+                        <h6 class="stars"> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i></h6>
+                    {% endif %}
+                    {% if review.rating == 4 %}
+                        <h6 class="stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i>
+                        </h6>
+                    {% endif %}
+                    {% if review.rating == 5 %}
+                        <h6 class="stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i>
+                        </h6>
+                    {% endif %}
+                    <h6><span>by</span> {{ review.username }}</h6>
+                    <hr>
+                    <span>{{ review.created_at }}</span>
+                </div>
+                    {% if user.is_staff %}
+                    <form method="POST" action="{% url 'delete_review' review.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btnCancel"><i class="fa-solid fa-xmark"></i></button>
+                    </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+  
+</body>
+</html>
+{% endblock %}

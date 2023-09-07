@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AskRad | Cryptocurrency {% endblock %}</title>
+    <style>
+        .crypto{
+            display: grid;
+            grid-template-columns: 25% 75%; /* Equal width for each column */
+          grid-gap: 15px;
+           /* Equal width for each column */
+          border-radius: 20px;
+          height: auto;
+          align-items: center;
+          margin: 0 auto;
+          padding: 10px;
+          background: url('https://images.pexels.com/photos/911738/pexels-photo-911738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+          backdrop-filter: 15px;
+          background-position: center;
+            background-size: cover;
+            width: 99%;
+            overflow: hidden;
+        }
+        .all-ten{
+            display: grid;
+            height: fit-content;
+            grid-template-columns: 1fr;
+          align-items: center;
+          margin-left: auto;
+          margin-right: auto; 
+          padding:10px;
+        }
+        td{
+            font-weight: 500;
+        }
+        th{
+            font-weight: 500;
+        }
+        .crypto-head{
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 80px;
+            width: 50px;
+        }
+        .crypto-tail{
+            padding: 5px;
+            font-size: 50px;
+            font-family: 'VT323', sans-serif;
+            color: #dfc907;
+            font-weight: bold;
+            text-shadow: 0px 0px 8px black;
+        }
+        .alt-name{
+            color: rgb(201, 201, 201);
+            margin-left: 5px;
+        }
+        .holder:hover{
+            background-color: rgb(216, 216, 216);
+            box-shadow: 0px 0px 2px black;
+        }
+        a{
+            text-decoration: none;
+            color: initial;
+        }
+        .main{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .main div{
+            margin: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            width: 250px;
+            height: auto;
+            min-height: 200px;
+            text-align: center;
+            background: linear-gradient(to bottom, transparent, white);
+            animation: scrollLeft 10s linear 1;
+
+        }
+        .main div img{
+            margin: 20px;
+        }
+        .main div img:hover{
+            width: 60px;
+            height: 55px;
+        }
+        
+           
+   
+        .coin-link{
+            color: #dfc907;
+        }
+
+     
+
+        /* Keyframes for the scrolling animation */
+        @keyframes scrollLeft {
+        0% {
+            transform: translateX(90px); /* At the beginning, no translation (starting position) */
+            opacity: 0; /* Faded opacity */
+        }
+        10% {
+            transform: translateX(10px); /* Translate left (box 1 moves out of view) */
+            opacity: 0.2; /* Full opacity for box 1 */
+        }
+        30% {
+            transform: translateX(-10px); /* Box 1 fully out of view, no translation */
+            opacity: 0.4; /* Box 1 faded out */
+        }
+        50% {
+            transform: translateX(-30px); /* Box 2 fully in view, no translation */
+            opacity: 0.6; /* Box 2 faded out */
+        }
+        60% {
+            transform: translateX(-55px); /* Box 2 fully in view, no translation */
+            opacity: 0.8; /* Box 2 faded out */
+        }
+        80% {
+            transform: translateX(-70px); /* Box 2 fully in view, no translation */
+            opacity: 0.6; /* Box 2 faded out */
+        }
+        90% {
+            transform: translateX(-80px); /* Box 2 fully in view, no translation */
+            opacity: 0.1; /* Box 2 faded out */
+        }
+        100% {
+            transform: translateX(-90px); /* Translate left (box 3 moves into view) */
+            opacity: 0; /* Full opacity for box 3 */
+        }
+        }
+        .error{
+            color: rgb(182, 11, 11);
+            font-size: larger;
+            text-align: center;
+            font-family: 'kanit', sans-serif;
+            
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        @media only screen and (max-width: 768px) {
+            .crypto{
+            display: grid;
+            grid-template-columns: 1fr;
+            width: 100%;
+            }
+            .container-play {
+                position:relative;
+                display:block;
+                margin: 0;
+            }
+            
+            .main div{
+                animation: scrollLeft 5s linear infinite;
+                margin: 5px;
+            padding: 5px;
+            border-radius: 6px;
+            width: 100px;
+            height: auto;
+            min-height: 50px;
+            text-align: center;
+            background: linear-gradient(to bottom, transparent, white);
+            backdrop-filter: 5px;
+            }
+
+
+        }
+
+    </style>
+</head>
+<body>
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif%}
+    {% if data %}
+        <div class="crypto">
+            <div class="crypto-left">
+                <div class="padding">
+                    <h1 class="crypto-head"> Rad Crypto</h1>
+                </div>
+
+            </div>
+            <div class="top-three">
+                <h2 class="crypto-tail">Top Coins</h2>
+                <div class="main">
+                    <div class="one">
+                        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{first_id}}.png" alt="coin logo" width="30px" height="28px">
+                        <h5>{{ first }}</h5>
+                        <span>${{ first_price }}</span>
+                    </div>
+                    <div class="two">
+                        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{second_id}}.png" alt="coin logo" width="30px" height="28px">
+                        <h5>{{ second }}</h5>
+                        <span>${{ second_price }}</span>
+                    </div>
+                    <div class="three">
+                        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{third_id}}.png" alt="coin logo" width="30px" height="28px">
+                        <h5>{{ third }}</h5>
+                        <span>${{ third_price }}</span>
+                    </div>
+
+
+                </div>
+           
+             
+            </div>
+        </div>
+        <div class="table-responsive all-ten">
+            <table class="table">
+                <thead class="table-dark">
+                  <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">1hr %</th>
+                      <th scope="col">24hr %</th>
+                      <th scope="col">7days %</th>
+                      <th scope="col">30days %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for coin in data %}
+                  <tr class="holder" 
+                  {% if coin.hour_change < 0 and coin.day_change < 0 and coin.week_change < 0 %} style="background-color: rgb(255, 247, 247);" {% endif %}
+                  {% if coin.hour_change > 0 and coin.day_change > 0 and coin.week_change > 0 %} style="background-color: #E5FFE5;" {% endif %}>
+                    <th scope="row"><img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{coin.id}}.png" alt="coin logo" width="30px" height="28px"></th>
+                    <td>{% if coin.names == "tether-usdt" %}<a href="https://coinmarketcap.com/currencies/tether/" target="_blank">Tether</a> <span class="alt-name">USDT</span></td>{% else %}<a href="https://coinmarketcap.com/currencies/{{coin.names}}/" target="_blank">{{ coin.name }}</a>  <span class="alt-name">{{ coin.title }}</span></td>{% endif %}
+                    <td>${{ coin.price }}</td>
+                    {% if coin.hour_change < 0 %}
+                        <td style="color: red;"><i class="fa-solid fa-caret-down"></i> {{ coin.hour_change}}</td>
+                    {% else %}
+                        <td style="color: rgb(5, 150, 10);"> <i class="fa-solid fa-caret-up"></i> {{ coin.hour_change}}</td>
+                    {% endif %}
+                    {% if coin.day_change < 0 %}
+                        <td style="color: red;"> <i class="fa-solid fa-caret-down"></i> {{ coin.day_change}}</td>
+                    {% else %}
+                        <td style="color: rgb(5, 150, 10);"><i class="fa-solid fa-caret-up"></i> {{ coin.day_change}}</td>
+                    {% endif %}
+                    {% if coin.week_change < 0 %}
+                    <td style="color: red;"><i class="fa-solid fa-caret-down"></i> {{ coin.week_change}}</td>
+                    {% else %}
+                    <td style="color: rgb(5, 150, 10);"><i class="fa-solid fa-caret-up"></i> {{ coin.week_change}}</td>
+                    {% endif %}
+                    {% if coin.month_change < 0 %}
+                        <td style="color: red;"><i class="fa-solid fa-caret-down"></i> {{ coin.month_change}}</td>
+                    {% else %}
+                        <td style="color: rgb(5, 150, 10);"><i class="fa-solid fa-caret-up"></i> {{ coin.month_change}}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    {% endif %}
+</body>
+{% endblock %}
+</html>
