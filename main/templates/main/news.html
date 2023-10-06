@@ -76,8 +76,10 @@
         .crypto-head{
             font-family: 'Chakra Petch', sans-serif;
             font-size: 80px;
-            margin: auto;
-            overflow: hidden;
+            display: absolute;
+            left: auto;
+            right: auto;
+            text-align: center;
             color: white;
         }
         .pic-box{
@@ -166,7 +168,7 @@
 </head>
 <body>
     <div class="news-pic">
-        <h1 class="crypto-head">Rad News Rad News Rad News Rad News Rad News Rad News</h1>
+        <h1 class="crypto-head">Rad News</h1>
     </div>
     <form  method="POST" class="form-group">
         {% csrf_token %}

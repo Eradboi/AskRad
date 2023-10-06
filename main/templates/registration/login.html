@@ -40,12 +40,14 @@
                     {{ form.username}}
                 </div>
                 <p style="color: rgb(18, 122, 36); font-size: 12px;" id="username-error"></p>
-
                 <label for="{{ form.password.id_for_label }}">Password</label>
                 <div>
                     {{form.password}}
                 </div>
-    
+                {% if form.errors %}
+                    <small style="color: rgb(223, 12, 12); font-size: 12px;">Please enter a correct username and password. Note that both fields may be case-sensitive.</small>
+                {% endif %}  
+                
                 <br>
                 <button type="submit" class="btn btn-dark" id="bts" >Login</button>
                 <br>

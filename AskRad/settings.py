@@ -136,7 +136,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/audio')
-STATIC_ROOT2 = os.path.join(BASE_DIR, 'static/crypto')
+STATIC_ROOT2 = os.path.join(BASE_DIR, 'static/intro')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = 'login'

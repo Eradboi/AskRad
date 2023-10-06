@@ -229,7 +229,9 @@
                   {% if coin.hour_change < 0 and coin.day_change < 0 and coin.week_change < 0 %} style="background-color: rgb(255, 247, 247);" {% endif %}
                   {% if coin.hour_change > 0 and coin.day_change > 0 and coin.week_change > 0 %} style="background-color: #E5FFE5;" {% endif %}>
                     <th scope="row"><img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{coin.id}}.png" alt="coin logo" width="30px" height="28px"></th>
-                    <td>{% if coin.names == "tether-usdt" %}<a href="https://coinmarketcap.com/currencies/tether/" target="_blank">Tether</a> <span class="alt-name">USDT</span></td>{% else %}<a href="https://coinmarketcap.com/currencies/{{coin.names}}/" target="_blank">{{ coin.name }}</a>  <span class="alt-name">{{ coin.title }}</span></td>{% endif %}
+                    <td>{% if coin.names == "tether-usdt" %}<a href="https://coinmarketcap.com/currencies/tether/" target="_blank">Tether</a> <span class="alt-name">USDT</span></td>
+                    {% elif coin.name == "BUSD" %}<a href="https://coinmarketcap.com/currencies/binance-usd/" target="_blank">BUSD</a> <span class="alt-name">BUSD</span></td>
+                    {% else %}<a href="https://coinmarketcap.com/currencies/{{coin.names}}/" target="_blank">{{ coin.name }}</a>  <span class="alt-name">{{ coin.title }}</span></td>{% endif %}
                     <td>${{ coin.price }}</td>
                     {% if coin.hour_change < 0 %}
                         <td style="color: red;"><i class="fa-solid fa-caret-down"></i> {{ coin.hour_change}}</td>
